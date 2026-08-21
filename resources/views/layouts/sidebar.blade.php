@@ -67,10 +67,10 @@
         'justify-start'">
         <a href="/">
             <img x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen"
-                class="dark:hidden" src="{{ $appSetting->logoLightUrl() }}" alt="Logo" width="150" height="40" />
+                class="dark:hidden" src="{{ $appSetting->logoLightUrl() }}" alt="Logo" width="250" height="60" />
             <img x-show="$store.sidebar.isExpanded || $store.sidebar.isHovered || $store.sidebar.isMobileOpen"
-                class="hidden dark:block" src="{{ $appSetting->logoDarkUrl() }}" alt="Logo" width="150"
-                height="40" />
+                class="hidden dark:block" src="{{ $appSetting->logoDarkUrl() }}" alt="Logo" width="250"
+                height="60" />
             <img x-show="!$store.sidebar.isExpanded && !$store.sidebar.isHovered && !$store.sidebar.isMobileOpen"
                 src="{{ $appSetting->logoIconUrl() }}" alt="Logo" width="32" height="32" />
 
