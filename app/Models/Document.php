@@ -72,14 +72,14 @@ class Document extends Model
         }
 
         if ($days < 0) {
-            return '⚠️ Dokumen ini sudah *melewati* tanggal berlaku sejak '.abs($days).' hari yang lalu.';
+            return 'Dokumen ini sudah *melewati* tanggal berlaku sejak '.abs($days).' hari yang lalu.';
         }
 
         if ($days === 0) {
-            return '⚠️ Dokumen ini *jatuh tempo hari ini*.';
+            return 'Dokumen ini *jatuh tempo hari ini*.';
         }
 
-        return "⏰ Dokumen ini akan jatuh tempo dalam *{$days} hari*.";
+        return "Dokumen ini akan jatuh tempo dalam *{$days} hari*.";
     }
 
     public function expiryStatus(): string
