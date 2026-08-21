@@ -15,18 +15,18 @@ class SendTicketCreatedNotification implements ShouldQueue
     {
         $ticket = $event->ticket->loadMissing(['category', 'unit']);
 
-        $adminNumber = WhatsappSetting::current()->notify_admin_number;
+        $setting = WhatsappSetting::current();
 
-        if ($adminNumber) {
+        if ($setting->notify_admin_number) {
             $this->gowa->send(
-                $adminNumber,
-                "🎫 *Tiket Baru Masuk*\n\n" .
-                    "*Kode Tiket:* {$ticket->ticket_code}\n" .
-                    "*Pelapor:* {$ticket->reporter_name}\n" .
-                    "*Unit:* {$ticket->unit->name}\n" .
-                    "*Kategori:* {$ticket->category->name}\n" .
-                    "*Judul:* {$ticket->title}\n\n" .
-                    'Mohon segera ditindaklanjuti.',
+                $setting->notify_admin_number,
+                $setting->renderTemplate('msg_ticket_created_admin', [
+                    'kode_tiket' => $ticket->ticket_code,
+                    'pelapor' => $ticket->reporter_name,
+                    'unit' => $ticket->unit->name,
+                    'kategori' => $ticket->category->name,
+                    'judul' => $ticket->title,
+                ]),
                 $ticket->id,
                 'ticket_created'
             );
@@ -35,9 +35,9 @@ class SendTicketCreatedNotification implements ShouldQueue
         if ($ticket->reporter_phone) {
             $this->gowa->send(
                 $ticket->reporter_phone,
-                "✅ *Tiket Anda Telah Diterima*\n\n" .
-                    "*Kode Tiket:* {$ticket->ticket_code}\n\n" .
-                    'Silakan simpan kode ini untuk melacak status tiket.',
+                $setting->renderTemplate('msg_ticket_created_reporter', [
+                    'kode_tiket' => $ticket->ticket_code,
+                ]),
                 $ticket->id,
                 'ticket_created'
             );

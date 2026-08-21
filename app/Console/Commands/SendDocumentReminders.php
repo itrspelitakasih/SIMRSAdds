@@ -23,6 +23,8 @@ class SendDocumentReminders extends Command
             ->whereNotNull('expiry_date')
             ->get();
 
+        $setting = WhatsappSetting::current();
+
         $sent = 0;
 
         foreach ($documents as $document) {
@@ -47,13 +49,13 @@ class SendDocumentReminders extends Command
                 continue;
             }
 
-            $phone = $document->reminder_phone ?: WhatsappSetting::current()->notify_admin_number;
+            $phone = $document->reminder_phone ?: $setting->notify_admin_number;
 
             if (! $phone) {
                 continue;
             }
 
-            $message = $this->buildMessage($document, $daysUntil, $isOverdue);
+            $message = $this->buildMessage($setting, $document);
 
             $success = $gowa->send($phone, $message, null, 'document_reminder');
 
@@ -73,22 +75,14 @@ class SendDocumentReminders extends Command
         return self::SUCCESS;
     }
 
-    private function buildMessage(Document $document, int $daysUntil, bool $isOverdue): string
+    private function buildMessage(WhatsappSetting $setting, Document $document): string
     {
-        $expiryDate = $document->expiry_date->translatedFormat('d F Y');
-
-        $statusLine = $isOverdue
-            ? '⚠️ Dokumen ini sudah *melewati* tanggal berlaku sejak '.abs($daysUntil).' hari yang lalu.'
-            : ($daysUntil === 0
-                ? '⚠️ Dokumen ini *jatuh tempo hari ini*.'
-                : "⏰ Dokumen ini akan jatuh tempo dalam *{$daysUntil} hari*.");
-
-        return "📄 *Pengingat Pembaruan Dokumen*\n\n".
-            "*Judul:* {$document->title}\n".
-            '*Jenis:* '.($document->documentType->name ?? '-')."\n".
-            '*No. Dokumen:* '.($document->document_number ?: '-')."\n".
-            "*Tanggal Berakhir:* {$expiryDate}\n\n".
-            "{$statusLine}\n\n".
-            'Mohon segera diperbarui dan diunggah ulang ke sistem.';
+        return $setting->renderTemplate('msg_document_reminder', [
+            'judul' => $document->title,
+            'jenis' => $document->documentType->name ?? '-',
+            'no_dokumen' => $document->document_number ?: '-',
+            'tanggal_berakhir' => $document->expiry_date->translatedFormat('d F Y'),
+            'status_line' => $document->reminderStatusLine(),
+        ]);
     }
 }

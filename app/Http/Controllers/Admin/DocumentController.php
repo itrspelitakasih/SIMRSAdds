@@ -94,17 +94,21 @@ class DocumentController extends Controller
 
     public function testReminder(Document $document, GowaService $gowa): RedirectResponse
     {
-        $phone = $document->reminder_phone ?: WhatsappSetting::current()->notify_admin_number;
+        $setting = WhatsappSetting::current();
+
+        $phone = $document->reminder_phone ?: $setting->notify_admin_number;
 
         if (! $phone) {
             return back()->withErrors(['reminder' => 'Nomor WA pengingat belum diatur untuk dokumen ini maupun di pengaturan WhatsApp.']);
         }
 
-        $message = "🧪 *Uji Coba Pengingat Dokumen*\n\n".
-            "*Dokumen:* {$document->title}\n".
-            '*Jenis:* '.($document->documentType->name ?? '-')."\n".
-            '*No. Dokumen:* '.($document->document_number ?: '-')."\n".
-            '*Tanggal Berakhir:* '.($document->expiry_date?->translatedFormat('d F Y') ?? '-');
+        $message = $setting->renderTemplate('msg_document_reminder', [
+            'judul' => $document->title,
+            'jenis' => $document->documentType->name ?? '-',
+            'no_dokumen' => $document->document_number ?: '-',
+            'tanggal_berakhir' => $document->expiry_date?->translatedFormat('d F Y') ?? '-',
+            'status_line' => $document->reminderStatusLine(),
+        ]);
 
         $success = $gowa->send($phone, $message, null, 'document_reminder_test');
 

@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\TicketCompleted;
+use App\Models\WhatsappSetting;
 use App\Services\GowaService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -22,9 +23,9 @@ class SendTicketCompletedNotification implements ShouldQueue
 
         $this->gowa->send(
             $ticket->reporter_phone,
-            "✅ *Tiket Selesai Dikerjakan*\n\n".
-                "*Kode Tiket:* {$ticket->ticket_code}\n\n".
-                'Terima kasih telah melaporkan melalui E-Tiket IT Rumah Sakit.',
+            WhatsappSetting::current()->renderTemplate('msg_ticket_completed', [
+                'kode_tiket' => $ticket->ticket_code,
+            ]),
             $ticket->id,
             'ticket_completed'
         );

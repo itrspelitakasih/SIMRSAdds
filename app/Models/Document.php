@@ -63,6 +63,25 @@ class Document extends Model
         return (int) Carbon::today()->diffInDays($this->expiry_date->copy()->startOfDay(), false);
     }
 
+    public function reminderStatusLine(): string
+    {
+        $days = $this->daysUntilExpiry();
+
+        if ($days === null) {
+            return '';
+        }
+
+        if ($days < 0) {
+            return '⚠️ Dokumen ini sudah *melewati* tanggal berlaku sejak '.abs($days).' hari yang lalu.';
+        }
+
+        if ($days === 0) {
+            return '⚠️ Dokumen ini *jatuh tempo hari ini*.';
+        }
+
+        return "⏰ Dokumen ini akan jatuh tempo dalam *{$days} hari*.";
+    }
+
     public function expiryStatus(): string
     {
         $days = $this->daysUntilExpiry();

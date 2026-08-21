@@ -62,6 +62,41 @@
                         Aktifkan notifikasi WhatsApp
                     </label>
 
+                    <div class="space-y-5 border-t border-gray-100 pt-5 dark:border-gray-800">
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-800 dark:text-white/90">Template Pesan</h4>
+                            <p class="mt-1 text-xs text-gray-400">Kosongkan untuk memakai template bawaan. Gunakan tanda kurung kurawal untuk menyisipkan data, mis. <code>{kode_tiket}</code>. Tanda <code>*teks*</code> akan tampil tebal di WhatsApp.</p>
+                        </div>
+
+                        <div>
+                            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">Tiket Baru &rarr; Admin</label>
+                            <textarea name="msg_ticket_created_admin" rows="6" placeholder="{{ $defaultTemplates['msg_ticket_created_admin'] }}"
+                                class="dark:bg-dark-900 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:outline-hidden dark:border-gray-700 dark:text-white/90">{{ old('msg_ticket_created_admin', $setting->msg_ticket_created_admin) }}</textarea>
+                            <p class="mt-1 text-xs text-gray-400">Placeholder: <code>{kode_tiket}</code>, <code>{pelapor}</code>, <code>{unit}</code>, <code>{kategori}</code>, <code>{judul}</code></p>
+                        </div>
+
+                        <div>
+                            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">Tiket Dibuat &rarr; Pelapor</label>
+                            <textarea name="msg_ticket_created_reporter" rows="4" placeholder="{{ $defaultTemplates['msg_ticket_created_reporter'] }}"
+                                class="dark:bg-dark-900 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:outline-hidden dark:border-gray-700 dark:text-white/90">{{ old('msg_ticket_created_reporter', $setting->msg_ticket_created_reporter) }}</textarea>
+                            <p class="mt-1 text-xs text-gray-400">Placeholder: <code>{kode_tiket}</code></p>
+                        </div>
+
+                        <div>
+                            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">Tiket Selesai &rarr; Pelapor</label>
+                            <textarea name="msg_ticket_completed" rows="4" placeholder="{{ $defaultTemplates['msg_ticket_completed'] }}"
+                                class="dark:bg-dark-900 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:outline-hidden dark:border-gray-700 dark:text-white/90">{{ old('msg_ticket_completed', $setting->msg_ticket_completed) }}</textarea>
+                            <p class="mt-1 text-xs text-gray-400">Placeholder: <code>{kode_tiket}</code></p>
+                        </div>
+
+                        <div>
+                            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">Pengingat Dokumen</label>
+                            <textarea name="msg_document_reminder" rows="7" placeholder="{{ $defaultTemplates['msg_document_reminder'] }}"
+                                class="dark:bg-dark-900 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 focus:outline-hidden dark:border-gray-700 dark:text-white/90">{{ old('msg_document_reminder', $setting->msg_document_reminder) }}</textarea>
+                            <p class="mt-1 text-xs text-gray-400">Placeholder: <code>{judul}</code>, <code>{jenis}</code>, <code>{no_dokumen}</code>, <code>{tanggal_berakhir}</code>, <code>{status_line}</code> (baris status jatuh tempo otomatis)</p>
+                        </div>
+                    </div>
+
                     <x-ui.button type="submit">Simpan Pengaturan</x-ui.button>
                 </form>
             </x-common.component-card>

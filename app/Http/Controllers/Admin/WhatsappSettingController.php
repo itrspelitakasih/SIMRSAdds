@@ -16,6 +16,7 @@ class WhatsappSettingController extends Controller
         return view('pages.admin.pengaturan.whatsapp', [
             'title' => 'Pengaturan WhatsApp',
             'setting' => WhatsappSetting::current(),
+            'defaultTemplates' => WhatsappSetting::defaultTemplates(),
         ]);
     }
 
@@ -29,6 +30,10 @@ class WhatsappSettingController extends Controller
             'device_id' => ['nullable', 'string', 'max:255'],
             'notify_admin_number' => ['nullable', 'string', 'max:20'],
             'is_active' => ['nullable', 'boolean'],
+            'msg_ticket_created_admin' => ['nullable', 'string', 'max:2000'],
+            'msg_ticket_created_reporter' => ['nullable', 'string', 'max:2000'],
+            'msg_ticket_completed' => ['nullable', 'string', 'max:2000'],
+            'msg_document_reminder' => ['nullable', 'string', 'max:2000'],
         ]);
 
         $setting = WhatsappSetting::current();
@@ -40,6 +45,10 @@ class WhatsappSettingController extends Controller
             'device_id' => $data['device_id'] ?? null,
             'notify_admin_number' => $data['notify_admin_number'] ?? null,
             'is_active' => $request->boolean('is_active'),
+            'msg_ticket_created_admin' => $data['msg_ticket_created_admin'] ?? null,
+            'msg_ticket_created_reporter' => $data['msg_ticket_created_reporter'] ?? null,
+            'msg_ticket_completed' => $data['msg_ticket_completed'] ?? null,
+            'msg_document_reminder' => $data['msg_document_reminder'] ?? null,
         ]);
 
         if (! empty($data['password'])) {
