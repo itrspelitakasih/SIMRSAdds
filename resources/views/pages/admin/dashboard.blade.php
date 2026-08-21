@@ -16,7 +16,7 @@
             />
         </div>
 
-        <div class="col-span-12 xl:col-span-7">
+        <div class="col-span-12 xl:col-span-6">
             <x-common.component-card title="Tiket per Bulan" desc="Jumlah tiket masuk setiap bulan ({{ now()->year }})">
                 <div id="monthlyTicketChart" class="flex justify-center"
                     data-labels="{{ json_encode($monthlyTicketChart['labels']) }}"
@@ -24,7 +24,7 @@
             </x-common.component-card>
         </div>
 
-        <div class="col-span-12 xl:col-span-5">
+        <div class="col-span-12 xl:col-span-6">
             <x-ecommerce.ticket-target
                 :rate="$resolutionRate"
                 :openCount="$openCount"

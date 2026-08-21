@@ -17,13 +17,13 @@
                 </p>
             </div>
         </div>
-        <div class="relative max-h-[195px] overflow-hidden">
+        <div class="relative max-h-[200px] overflow-hidden">
             <div id="ticketTargetChart" class="h-full" data-rate="{{ min(100, $rate) }}"></div>
-            <span class="absolute left-1/2 top-[85%] -translate-x-1/2 -translate-y-[85%] rounded-full {{ $rate >= 100 ? 'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500' : 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400' }} px-3 py-1 text-xs font-medium">
+            <span class="absolute left-1/2 top-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full {{ $rate >= 100 ? 'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500' : 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400' }} px-3 py-1 text-xs font-medium">
                 {{ $rate >= 100 ? 'Tercapai' : 'Dalam Proses' }}
             </span>
         </div>
-        <p class="mx-auto mt-1.5 w-full max-w-[380px] text-center text-sm text-gray-500 sm:text-base">
+        <p class="mx-auto mt-4 w-full max-w-[380px] text-center text-sm text-gray-500 sm:text-base">
             @if ($rate >= 100)
                 Semua tiket bulan ini sudah terselesaikan. Kerja bagus!
             @else

@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\WhatsappSettingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Guest\TicketController as GuestTicketController;
+use App\Http\Controllers\ProfileController;
 use App\Models\Document;
 use Illuminate\Support\Facades\Route;
 
@@ -141,9 +142,8 @@ Route::middleware('auth')->group(function () {
     })->name('calendar');
 
     // profile pages
-    Route::get('/profile', function () {
-        return view('pages.profile', ['title' => 'Profile']);
-    })->name('profile');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     // form pages
     Route::get('/form-elements', function () {

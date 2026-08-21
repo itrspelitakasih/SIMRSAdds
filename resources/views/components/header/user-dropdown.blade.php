@@ -63,7 +63,7 @@
                                 fill="currentColor"
                             />
                         </svg>',
-                        'path' => 'profile',
+                        'path' => route('profile'),
                     ],
                     [
                         'text' => 'Account settings',

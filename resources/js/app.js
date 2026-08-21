@@ -63,4 +63,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('#dashboardCalendar')) {
         import('./components/dashboard-calendar-init').then(module => module.dashboardCalendarInit());
     }
+
+    // The main content area animates its width when the sidebar collapses/expands
+    // or hovers open. ApexCharts measures its container once at render time, so
+    // charts rendered mid-transition end up sized for the wrong width. Re-dispatch
+    // a resize event whenever the content area's width actually settles so every
+    // chart on the page (they all listen for window resize) re-syncs to it.
+    const mainContent = document.querySelector('#mainContent');
+    if (mainContent) {
+        let lastWidth = mainContent.clientWidth;
+        const resizeObserver = new ResizeObserver(() => {
+            if (mainContent.clientWidth !== lastWidth) {
+                lastWidth = mainContent.clientWidth;
+                window.dispatchEvent(new Event('resize'));
+            }
+        });
+        resizeObserver.observe(mainContent);
+    }
+
+    // Also re-sync once everything (fonts, images) has finished loading, in case
+    // a chart's very first render happened before layout/fonts had settled.
+    window.addEventListener('load', () => window.dispatchEvent(new Event('resize')));
 });

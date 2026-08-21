@@ -25,15 +25,13 @@ class MenuHelper
                 'permission' => 'laporan',
             ],
             [
-                'icon' => 'pages',
-                'name' => 'Reminder Dokumen',
-                'path' => '/documents',
-                'permission' => 'documents',
-            ],
-            [
+                'name' => 'Dokumen',
                 'icon' => 'calendar',
-                'name' => 'Calendar',
-                'path' => '/calendar',
+                'subItems' => [
+                    ['name' => 'Kalender', 'path' => '/calendar', 'pro' => false],
+                    ['name' => 'Jenis Dokumen', 'path' => '/document-types', 'pro' => false, 'permission' => 'document-types'],
+                    ['name' => 'Reminder Dokumen', 'path' => '/documents', 'pro' => false, 'permission' => 'documents'],
+                ],
             ],
             [
                 'name' => 'Master Data',
@@ -41,7 +39,6 @@ class MenuHelper
                 'subItems' => [
                     ['name' => 'Kategori', 'path' => '/categories', 'pro' => false, 'permission' => 'categories'],
                     ['name' => 'Unit', 'path' => '/units', 'pro' => false, 'permission' => 'units'],
-                    ['name' => 'Jenis Dokumen', 'path' => '/document-types', 'pro' => false, 'permission' => 'document-types'],
                 ],
             ],
             [

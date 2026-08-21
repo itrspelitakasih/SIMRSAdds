@@ -30,7 +30,7 @@ export function initMonthlyTicketChart() {
       fontFamily: "Outfit, sans-serif",
       type: "bar",
       height: 260,
-      width: "65%",
+      width: "100%",
       toolbar: {
         show: false,
       },
@@ -41,7 +41,7 @@ export function initMonthlyTicketChart() {
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: "25%",
+        columnWidth: "40%",
         borderRadius: 4,
         borderRadiusApplication: "end",
       },
