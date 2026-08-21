@@ -1,0 +1,9 @@
+# Cron entry untuk Laravel Scheduler E-Tiket RS.
+# Menjalankan `documents:send-reminders` (dijadwalkan di routes/console.php)
+# lewat scheduler bawaan Laravel.
+#
+# Cara pasang di VPS:
+#   sudo crontab -e -u www-data
+# lalu tempel baris di bawah ini (sesuaikan path jika bukan /var/www/etiket):
+
+* * * * * cd /var/www/etiket && php artisan schedule:run >> /dev/null 2>&1
