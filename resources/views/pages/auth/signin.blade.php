@@ -1,5 +1,9 @@
 @extends('layouts.fullscreen-layout')
 
+@php
+    $appSetting = \App\Models\AppSetting::current();
+@endphp
+
 @section('content')
     <div class="relative z-1 bg-white p-6 sm:p-0 dark:bg-gray-900">
         <div class="relative flex h-screen w-full flex-col justify-center sm:p-0 lg:flex-row dark:bg-gray-900">
@@ -110,10 +114,11 @@
                     <x-common.common-grid-shape/>
                     <div class="flex max-w-xs flex-col items-center">
                         <a href="/" class="mb-4 block">
-                            <img src="./images/logo/auth-logo.svg" alt="Logo" />
+                            <img class="dark:hidden" src="{{ $appSetting->logoLightUrl() }}" alt="Logo" />
+                            <img class="hidden dark:block" src="{{ $appSetting->logoDarkUrl() }}" alt="Logo" />
                         </a>
                         <p class="text-center text-gray-400 dark:text-white/60">
-                            Free and Open-Source Tailwind CSS Admin Dashboard Template
+                            {{ $appSetting->app_name ?: config('app.name') }}
                         </p>
                     </div>
                 </div>
