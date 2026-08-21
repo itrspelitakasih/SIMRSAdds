@@ -100,11 +100,11 @@ class DocumentController extends Controller
             return back()->withErrors(['reminder' => 'Nomor WA pengingat belum diatur untuk dokumen ini maupun di pengaturan WhatsApp.']);
         }
 
-        $message = "Uji coba pengingat dokumen:\n".
-            "Dokumen: {$document->title}\n".
-            'Jenis: '.($document->documentType->name ?? '-')."\n".
-            'No. Dokumen: '.($document->document_number ?: '-')."\n".
-            'Tanggal Berakhir: '.($document->expiry_date?->translatedFormat('d F Y') ?? '-');
+        $message = "🧪 *Uji Coba Pengingat Dokumen*\n\n".
+            "*Dokumen:* {$document->title}\n".
+            '*Jenis:* '.($document->documentType->name ?? '-')."\n".
+            '*No. Dokumen:* '.($document->document_number ?: '-')."\n".
+            '*Tanggal Berakhir:* '.($document->expiry_date?->translatedFormat('d F Y') ?? '-');
 
         $success = $gowa->send($phone, $message, null, 'document_reminder_test');
 

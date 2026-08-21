@@ -78,16 +78,16 @@ class SendDocumentReminders extends Command
         $expiryDate = $document->expiry_date->translatedFormat('d F Y');
 
         $statusLine = $isOverdue
-            ? 'Dokumen ini sudah *melewati* tanggal berlaku sejak '.abs($daysUntil).' hari yang lalu.'
+            ? '⚠️ Dokumen ini sudah *melewati* tanggal berlaku sejak '.abs($daysUntil).' hari yang lalu.'
             : ($daysUntil === 0
-                ? 'Dokumen ini *jatuh tempo hari ini*.'
-                : "Dokumen ini akan jatuh tempo dalam *{$daysUntil} hari*.");
+                ? '⚠️ Dokumen ini *jatuh tempo hari ini*.'
+                : "⏰ Dokumen ini akan jatuh tempo dalam *{$daysUntil} hari*.");
 
-        return "Pengingat Pembaruan Dokumen\n\n".
-            "Judul: {$document->title}\n".
-            'Jenis: '.($document->documentType->name ?? '-')."\n".
-            'No. Dokumen: '.($document->document_number ?: '-')."\n".
-            "Tanggal Berakhir: {$expiryDate}\n\n".
+        return "📄 *Pengingat Pembaruan Dokumen*\n\n".
+            "*Judul:* {$document->title}\n".
+            '*Jenis:* '.($document->documentType->name ?? '-')."\n".
+            '*No. Dokumen:* '.($document->document_number ?: '-')."\n".
+            "*Tanggal Berakhir:* {$expiryDate}\n\n".
             "{$statusLine}\n\n".
             'Mohon segera diperbarui dan diunggah ulang ke sistem.';
     }

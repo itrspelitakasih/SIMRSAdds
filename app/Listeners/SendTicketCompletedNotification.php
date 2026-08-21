@@ -22,8 +22,9 @@ class SendTicketCompletedNotification implements ShouldQueue
 
         $this->gowa->send(
             $ticket->reporter_phone,
-            "Tiket #{$ticket->ticket_code} telah selesai dikerjakan.\n".
-                "Terima kasih telah melaporkan melalui E-Tiket IT Rumah Sakit.",
+            "✅ *Tiket Selesai Dikerjakan*\n\n".
+                "*Kode Tiket:* {$ticket->ticket_code}\n\n".
+                'Terima kasih telah melaporkan melalui E-Tiket IT Rumah Sakit.',
             $ticket->id,
             'ticket_completed'
         );

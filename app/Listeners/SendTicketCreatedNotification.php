@@ -9,9 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendTicketCreatedNotification implements ShouldQueue
 {
-    public function __construct(private GowaService $gowa)
-    {
-    }
+    public function __construct(private GowaService $gowa) {}
 
     public function handle(TicketCreated $event): void
     {
@@ -22,10 +20,13 @@ class SendTicketCreatedNotification implements ShouldQueue
         if ($adminNumber) {
             $this->gowa->send(
                 $adminNumber,
-                "Tiket baru #{$ticket->ticket_code}\n".
-                    "Pelapor: {$ticket->reporter_name} ({$ticket->unit->name})\n".
-                    "Kategori: {$ticket->category->name}\n".
-                    "Judul: {$ticket->title}",
+                "🎫 *Tiket Baru Masuk*\n\n" .
+                    "*Kode Tiket:* {$ticket->ticket_code}\n" .
+                    "*Pelapor:* {$ticket->reporter_name}\n" .
+                    "*Unit:* {$ticket->unit->name}\n" .
+                    "*Kategori:* {$ticket->category->name}\n" .
+                    "*Judul:* {$ticket->title}\n\n" .
+                    'Mohon segera ditindaklanjuti.',
                 $ticket->id,
                 'ticket_created'
             );
@@ -34,9 +35,9 @@ class SendTicketCreatedNotification implements ShouldQueue
         if ($ticket->reporter_phone) {
             $this->gowa->send(
                 $ticket->reporter_phone,
-                "Tiket Anda telah diterima.\n".
-                    "Kode tiket: {$ticket->ticket_code}\n".
-                    "Silakan simpan kode ini untuk melacak status perbaikan.",
+                "✅ *Tiket Anda Telah Diterima*\n\n" .
+                    "*Kode Tiket:* {$ticket->ticket_code}\n\n" .
+                    'Silakan simpan kode ini untuk melacak status tiket.',
                 $ticket->id,
                 'ticket_created'
             );
