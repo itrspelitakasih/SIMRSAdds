@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\WhatsappSettingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Guest\TicketController as GuestTicketController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Document;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +48,8 @@ Route::post('/signout', [AuthController::class, 'logout'])->name('signout')->mid
 */
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/notifications/tickets', [NotificationController::class, 'tickets'])->name('notifications.tickets');
 
     Route::middleware('permission:tickets')->group(function () {
         Route::get('/tickets', [AdminTicketController::class, 'index'])->name('tickets.index');
