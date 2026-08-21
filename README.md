@@ -252,6 +252,68 @@ chmod -R 775 storage bootstrap/cache
 php artisan optimize:clear
 ```
 
+### Deploy di panel hosting (aaPanel/BT Panel dkk.)
+
+Skenario yang sering muncul saat deploy pertama kali di VPS dengan panel
+seperti aaPanel/BT Panel (folder web root di `/www/wwwroot/<domain>/`):
+
+**1. `npm install` error `ENOENT ... package.json` tidak ketemu**
+
+Panel biasanya membuat folder domain kosong saat website dibuat, tapi repo
+belum di-clone ke situ (atau ter-clone ke subfolder, mis.
+`/www/wwwroot/domain/SIMRSAdds/`). Pastikan berada di folder yang benar
+(folder yang berisi `artisan`, `composer.json`, `package.json`) sebelum
+menjalankan `composer install` / `npm install`:
+
+```bash
+cd /www/wwwroot/domain-anda/SIMRSAdds   # atau /www/wwwroot/domain-anda langsung
+ls artisan composer.json package.json    # pastikan ketiganya ada di sini
+```
+
+Kalau folder web root masih kosong, clone langsung ke situ:
+
+```bash
+git clone https://github.com/itrspelitakasih/SIMRSAdds.git /www/wwwroot/domain-anda
+```
+
+**2. `file_put_contents(.../storage/framework/views/....php): Permission denied`**
+
+User yang menjalankan PHP-FPM (cek dengan `ps aux | grep php-fpm`, di
+aaPanel biasanya user **`www`**) tidak punya izin tulis ke `storage` dan
+`bootstrap/cache`:
+
+```bash
+cd /www/wwwroot/domain-anda/SIMRSAdds
+
+chown -R www:www storage bootstrap/cache
+find storage bootstrap/cache -type d -exec chmod 775 {} \;
+find storage bootstrap/cache -type f -exec chmod 664 {} \;
+
+php artisan view:clear
+php artisan optimize:clear
+```
+
+Ganti `www:www` sesuai user PHP-FPM sebenarnya kalau berbeda (mis.
+`www-data:www-data`).
+
+**3. `Vite manifest not found at: .../public/build/manifest.json`**
+
+Aset frontend belum pernah di-build di server (folder `public/build` tidak
+ikut ter-commit ke git, jadi harus di-generate lewat `npm run build`):
+
+```bash
+cd /www/wwwroot/domain-anda/SIMRSAdds
+
+npm install     # butuh Node.js 18+, cek dengan: node -v
+npm run build
+
+# pastikan hasil build bisa dibaca web server
+chown -R www:www public/build
+```
+
+Setelah 3 langkah di atas, jalankan `php artisan optimize:clear` sekali
+lagi lalu reload situsnya.
+
 ## License
 
 Base template UI menggunakan [TailAdmin Laravel](https://tailadmin.com/laravel) — lihat [LICENSE](LICENSE).
