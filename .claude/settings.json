@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/tmp/**)",
+      "Bash(curl -s -b admin_cookies.txt -o ticket_detail.html -w \"DETAIL:%{http_code}\\\\n\" http://127.0.0.1:8123/tickets/1)",
+      "Bash(/c/laragon/bin/mysql/mysql-8.0.30-winx64/bin/mysql.exe -h127.0.0.1 -P3301 -uroot etiket -e \"SELECT id, ticket_code, status FROM tickets;\")",
+      "Bash(curl -s -b admin_cookies.txt -c admin_cookies.txt -o ticket_detail.html -w \"DETAIL:%{http_code}\\\\n\" http://127.0.0.1:8123/tickets/2)",
+      "Bash(curl -s -o lacak_detail.html -w \"LACAK:%{http_code}\\\\n\" http://127.0.0.1:8123/lacak/TIK-20260820-3790)",
+      "Bash(curl -s -b admin_cookies.txt -o categories.html -w \"CATEGORIES:%{http_code}\\\\n\" http://127.0.0.1:8123/categories)",
+      "Bash(curl -s -b admin_cookies.txt -o units.html -w \"UNITS:%{http_code}\\\\n\" http://127.0.0.1:8123/units)",
+      "Bash(curl -s -b admin_cookies.txt -o users.html -w \"USERS:%{http_code}\\\\n\" http://127.0.0.1:8123/users)",
+      "Bash(curl -s -b admin_cookies.txt -o laporan.html -w \"LAPORAN:%{http_code}\\\\n\" http://127.0.0.1:8123/laporan)",
+      "Bash(curl -s -b admin_cookies.txt -o wa_settings.html -w \"WA_SETTINGS:%{http_code}\\\\n\" http://127.0.0.1:8123/pengaturan/whatsapp)",
+      "Bash(curl -s -b admin_cookies.txt -o laporan.xlsx -w \"EXCEL:%{http_code} SIZE:%{size_download}\\\\n\" \"http://127.0.0.1:8123/laporan/export?format=excel\")",
+      "Bash(curl -s -b admin_cookies.txt -o laporan.pdf -w \"PDF:%{http_code} SIZE:%{size_download}\\\\n\" \"http://127.0.0.1:8123/laporan/export?format=pdf\")",
+      "Bash(xxd)",
+      "Bash(taskkill //F //PID 14132)",
+      "Read(//tmp/**)",
+      "Bash(curl -s -b /tmp/cookies3.txt http://127.0.0.1:8123/categories -o /tmp/categories.html)",
+      "Bash(curl -s -b /tmp/cookies3.txt http://127.0.0.1:8123/tickets/2 -o /tmp/ticket_show2.html -w \"%{http_code}\\\\n\")",
+      "Bash(curl -s -b /tmp/cookies3.txt http://127.0.0.1:8123/tickets/3 -o /tmp/ticket_show3.html -w \"%{http_code}\\\\n\")",
+      "Bash(/c/laragon/bin/mysql/mysql-8.0.30-winx64/bin/mysql.exe -h127.0.0.1 -P3301 -uroot etiket -e ' *)",
+      "Bash(taskkill //F //PID 22872)",
+      "Bash(/c/laragon/bin/mysql/mysql-8.0.30-winx64/bin/mysql.exe -h127.0.0.1 -P3301 -uroot etiket -e \"SELECT base_url, port, username, device_id, notify_admin_number, is_active FROM whatsapp_settings; SELECT id, phone, event, status, response, created_at FROM notification_logs ORDER BY id DESC LIMIT 5;\")",
+      "Bash(/c/laragon/bin/mysql/mysql-8.0.30-winx64/bin/mysql.exe -h127.0.0.1 -P3301 -uroot etiket -e \"SELECT is_active FROM whatsapp_settings;\")",
+      "Bash(/c/laragon/bin/mysql/mysql-8.0.30-winx64/bin/mysql.exe -h127.0.0.1 -P3301 -uroot etiket -e \"SELECT id, is_active FROM whatsapp_settings;\")",
+      "Bash(/c/laragon/bin/mysql/mysql-8.0.30-winx64/bin/mysql.exe -h127.0.0.1 -P3301 -uroot etiket -e \"SELECT id, base_url, port, username, is_active FROM whatsapp_settings;\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:8000/signin)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://etiket.test/signin)",
+      "Bash(grep -A10 \"petugas.test@rs.local\" /tmp/users_index.html)",
+      "Bash(grep -A8 \"petugas.test@rs.local\" /tmp/users_index2.html | tr -s ' \\\\n' ' ')",
+      "Bash(grep -A12 \">Supervisor<\" /tmp/roles_index2.html | tr -s ' \\\\n' ' ')",
+      "Bash(grep -n \"Tiket\" /tmp/dash_petugas2.html)",
+      "Bash(php -l app/Services/GoogleDriveService.php)",
+      "Bash(php -l app/Models/GoogleDriveSetting.php)",
+      "Bash(php -l app/Http/Controllers/Admin/GoogleDriveSettingController.php)",
+      "Bash(php -l app/Http/Controllers/Admin/DocumentController.php)",
+      "Bash(php -l app/Models/Document.php)"
+    ]
+  }
+}
