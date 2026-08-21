@@ -149,8 +149,55 @@ setelah aplikasi berjalan:
   kredensial server Gowa untuk kirim notifikasi tiket baru/selesai serta
   pengingat dokumen.
 - **Google Drive** — menu *Pengaturan → Google Drive* (`/pengaturan/google-drive`):
-  hubungkan akun Google untuk penyimpanan dokumen. Di Google Cloud Console,
-  set *Authorized redirect URI* ke `https://domain-anda.com/pengaturan/google-drive/callback`.
+  hubungkan akun Google untuk penyimpanan dokumen (dokumen di-upload otomatis
+  ke Drive saat disimpan, lihat `GoogleDriveService::uploadDocument`).
+
+### Setup Google Drive di Google Cloud Console
+
+Integrasi ini pakai OAuth2 (scope penuh `drive`) supaya aplikasi bisa upload
+file ke akun Google Drive yang kamu hubungkan. Berikut langkah membuat
+kredensialnya:
+
+1. **Buat/pilih project** di [Google Cloud Console](https://console.cloud.google.com/).
+2. **Aktifkan Google Drive API**: menu *APIs & Services → Library*, cari
+   **Google Drive API**, klik **Enable**.
+3. **Konfigurasi OAuth consent screen**: menu *APIs & Services → OAuth
+   consent screen*.
+   - User type: **External** (atau **Internal** kalau pakai Google Workspace
+     dan hanya untuk internal RS).
+   - Isi App name, User support email, Developer contact email.
+   - Scopes: tidak wajib ditambah manual di sini (scope `drive` diminta saat
+     login lewat kode aplikasi), langsung **Save and Continue**.
+   - Test users: kalau consent screen masih status **Testing**, tambahkan
+     email Google yang akan dipakai untuk connect (misalnya email admin RS)
+     di tab **Test users** — kalau tidak, Google akan menolak login dengan
+     error `access_denied`.
+4. **Buat OAuth Client ID**: menu *APIs & Services → Credentials* → **Create
+   Credentials → OAuth client ID**.
+   - Application type: **Web application**.
+   - Name: bebas, mis. `E-Tiket RS`.
+   - **Authorized redirect URIs**, tambahkan persis (sesuai `APP_URL`):
+     - Lokal: `http://localhost:8000/pengaturan/google-drive/callback`
+     - Produksi: `https://domain-anda.com/pengaturan/google-drive/callback`
+   - Klik **Create** → salin **Client ID** dan **Client Secret** yang muncul.
+5. **Isi kredensial di aplikasi**: login ke E-Tiket RS sebagai admin, buka
+   *Pengaturan → Google Drive*, tempel **Client ID** dan **Client Secret**,
+   (opsional) isi **Folder ID** tujuan upload — ambil dari URL folder Drive
+   `https://drive.google.com/drive/folders/<FOLDER_ID>` — lalu **Save**.
+6. **Hubungkan akun**: klik tombol **Connect/Hubungkan**. Kamu akan diarahkan
+   ke layar consent Google — pilih akun, izinkan akses. Pastikan Google
+   mengembalikan **refresh token**; jika tidak (`Google tidak mengembalikan
+   refresh token`), buka [myaccount.google.com/permissions](https://myaccount.google.com/permissions),
+   cabut akses aplikasi ini, lalu ulangi proses connect (Google hanya
+   mengirim refresh token pada otorisasi pertama kali, kecuali dicabut dulu).
+7. **Uji koneksi**: klik tombol **Test Connection** di halaman yang sama
+   untuk memastikan aplikasi bisa membaca daftar folder di Drive tersebut.
+
+> Catatan: jika consent screen masih status **Testing** (belum di-publish),
+> token Google hanya berlaku ~7 hari dan perlu connect ulang secara berkala.
+> Untuk penggunaan produksi jangka panjang, publish OAuth consent screen ke
+> status **In production** (butuh verifikasi Google jika scope-nya sensitif,
+> seperti `drive` penuh).
 
 ## ☁️ Deploy ke VPS
 
